@@ -10,7 +10,7 @@ from datetime import date, datetime
 
 # Chrome options
 options = webdriver.ChromeOptions()
-# options.add_argument('--headless')
+options.add_argument('--headless')
 options.add_argument("--incognito")
 options.add_argument('--disable-gpu')
 
@@ -67,10 +67,6 @@ def scrape_jobs():
 
     time.sleep(1)
 
-    # date_dropdown.find_element_by_xpath('//*[@id="filter-dateposted-menu"]/li[1]/a').click()
-    # more_data_url = driver.current_url + "&limit=50"
-    # driver.get(more_data_url)
-
     title = []
     company = []
     location = []
@@ -94,15 +90,12 @@ def scrape_jobs():
                 popup_close()
 
                 job_title = driver.find_elements_by_xpath("//*[@class='resultContent']/div/h2/span").__getitem__(i).text
-                # print(f"\nJob Title : {job_title}")
                 title.append(job_title)
 
                 job_location = driver.find_elements_by_class_name("companyLocation").__getitem__(i).text
-                # print(f" Job location : {job_location}")
                 location.append(job_location)
 
                 company_name = driver.find_elements_by_class_name("companyName").__getitem__(i).text
-                # print(f"Company Name :{company_name}")
                 company.append(company_name)
 
                 job_date_posted = driver.find_elements_by_xpath('//span[@class="date"]').__getitem__(i).text
@@ -120,7 +113,6 @@ def scrape_jobs():
                         "//div[@class='jobsearch-JobDescriptionSection-sectionItem']/div[2]").text
                 else:
                     job_type = ""
-                    # print(f"Job Category : {job_type}\n")
 
                 category.append(job_type)
 
@@ -133,7 +125,6 @@ def scrape_jobs():
 
                 # extracting Job description
                 job_desc = driver.find_element_by_xpath('//div[@id="jobDescriptionText"]').text
-                # print(f"Job Description : {job_desc}")
                 handle_job_alert()
                 description.append(job_desc)
 
@@ -172,8 +163,8 @@ def scrape_jobs():
     df_da['Job Extract Date'] = date.today()
     df_da.to_csv(r'C:\Users\trish\Desktop\JobSearch_Indeed.csv', index=False, header=True)
 
-    # driver.close()
-    # river.quit()
+    driver.close()
+    driver.quit()
 
 
 scrape_jobs()
